@@ -33,6 +33,10 @@
       "path": "libs/dal"
     },
     {
+      "name": "📦 @novu/aal",
+      "path": "libs/aal"
+    },
+    {
       "name": "📦 @novu/design-system",
       "path": "libs/design-system"
     },

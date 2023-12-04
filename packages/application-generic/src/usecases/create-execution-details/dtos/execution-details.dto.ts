@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ExecutionDetailsEntity } from '@novu/dal';
+import { ExecutionDetailsEntity } from '@novu/aal';
 
 import { CreateExecutionDetailsCommand } from '../create-execution-details.command';
 
@@ -13,7 +13,7 @@ export class CreateExecutionDetailsResponseDto {
 
 export const mapExecutionDetailsCommandToEntity = (
   command: CreateExecutionDetailsCommand
-): Omit<ExecutionDetailsEntity, '_id' | 'createdAt'> => {
+): ExecutionDetailsEntity => {
   const {
     jobId: _jobId,
     environmentId: _environmentId,
@@ -22,8 +22,11 @@ export const mapExecutionDetailsCommandToEntity = (
     notificationId: _notificationId,
     notificationTemplateId: _notificationTemplateId,
     messageId: _messageId,
+    _id: _id,
+    createdAt,
     ...nonUnderscoredFields
   } = command;
+  const created = createdAt ? new Date(createdAt) : new Date();
 
   return {
     _jobId: _jobId as string,
@@ -33,6 +36,8 @@ export const mapExecutionDetailsCommandToEntity = (
     _notificationId,
     _notificationTemplateId: _notificationTemplateId as string,
     _messageId,
+    _id: _id,
+    createdAt: created.toISOString(),
     ...nonUnderscoredFields,
-  };
+  } as ExecutionDetailsEntity;
 };

@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString, IsDate } from 'class-validator';
-import { ExecutionDetailsEntity, ExecutionDetailsRepository } from '@novu/dal';
+import { ExecutionDetailsEntity } from '@novu/dal';
+import { v4 as uuidv4 } from 'uuid';
 import {
   ExecutionDetailsSourceEnum,
   ExecutionDetailsStatusEnum,
@@ -104,7 +105,7 @@ export class CreateExecutionDetailsCommand extends EnvironmentWithSubscriber {
     createdAt: Date;
   } {
     return {
-      _id: ExecutionDetailsRepository.createObjectId(),
+      _id: uuidv4(),
       createdAt: new Date(),
     };
   }

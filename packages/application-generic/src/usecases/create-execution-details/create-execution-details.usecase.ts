@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ExecutionDetailsRepository, ExecutionDetailsEntity } from '@novu/dal';
+import { ExecutionDetailsRepository } from '@novu/dal';
+import {
+  ExecutionDetailsRepository as ExRepo,
+  ExecutionDetailsEntity,
+} from '@novu/aal';
 import { ExecutionDetailsStatusEnum } from '@novu/shared';
 
 import {
@@ -10,7 +14,10 @@ import { CreateExecutionDetailsCommand } from './create-execution-details.comman
 
 @Injectable()
 export class CreateExecutionDetails {
-  constructor(private executionDetailsRepository: ExecutionDetailsRepository) {}
+  constructor(
+    private executionDetailsRepository: ExecutionDetailsRepository,
+    private exRepo: ExRepo
+  ) {}
 
   async execute(
     command: CreateExecutionDetailsCommand
@@ -20,10 +27,11 @@ export class CreateExecutionDetails {
 
     entity = this.cleanFromNulls(entity);
 
-    const { _id, createdAt } = await this.executionDetailsRepository.create(
-      entity,
+    await this.executionDetailsRepository.create(
+      { ...entity, _id: ExecutionDetailsRepository.createObjectId() },
       { writeConcern: 1 }
     );
+    await this.exRepo.create([entity]);
 
     if (command.status === ExecutionDetailsStatusEnum.FAILED) {
       throw new Error(command.detail);
@@ -34,14 +42,14 @@ export class CreateExecutionDetails {
      * TODO: Provide more data for a HTTP 200. Discuss which one choose.
      */
     return {
-      id: _id,
-      createdAt,
+      id: entity._id,
+      createdAt: new Date(entity.createdAt).toISOString(),
     };
   }
 
   private cleanFromNulls(
-    entity: Omit<ExecutionDetailsEntity, 'createdAt' | '_id'>
-  ): Omit<ExecutionDetailsEntity, 'createdAt' | '_id'> {
+    entity: ExecutionDetailsEntity
+  ): ExecutionDetailsEntity {
     const cleanEntity = Object.assign({}, entity);
 
     if (cleanEntity.raw === null) {

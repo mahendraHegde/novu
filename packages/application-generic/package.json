@@ -59,6 +59,7 @@
     "@novu/clickatell": "^0.22.0",
     "@novu/clicksend": "^0.22.0",
     "@novu/dal": "^0.22.0",
+    "@novu/aal": "^0.22.0",
     "@novu/discord": "^0.22.0",
     "@novu/email-webhook": "^0.22.0",
     "@novu/emailjs": "^0.22.0",
@@ -130,7 +131,8 @@
     "pino-pretty": "^9.4.0",
     "redlock": "4.2.0",
     "reflect-metadata": "^0.1.13",
-    "rrule": "^2.7.2"
+    "rrule": "^2.7.2",
+    "uuid": "^8.3.2"
   },
   "optionalDependencies": {
     "@taskforcesh/bullmq-pro": "5.1.14"

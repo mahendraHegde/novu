@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ExecutionDetailsEntity, ExecutionDetailsRepository, SubscriberEntity, SubscriberRepository } from '@novu/dal';
+import { ExecutionDetailsRepository, SubscriberEntity, SubscriberRepository } from '@novu/dal';
+import { ExecutionDetailsRepository as ExecDetailsRepo, ExecutionDetailsEntity } from '@novu/aal';
 import { buildSubscriberKey, CachedEntity } from '@novu/application-generic';
 import { GetExecutionDetailsCommand } from './get-execution-details.command';
 
 @Injectable()
 export class GetExecutionDetails {
   constructor(
+    private execDetailsRepository: ExecDetailsRepo,
     private executionDetailsRepository: ExecutionDetailsRepository,
     private subscriberRepository: SubscriberRepository
   ) {}
@@ -19,11 +21,18 @@ export class GetExecutionDetails {
       throw new NotFoundException(`Subscriber not found for id ${command.subscriberId}`);
     }
 
-    return this.executionDetailsRepository.find({
+    return this.execDetailsRepository.find({
       _notificationId: command.notificationId,
       _environmentId: command.environmentId,
       _subscriberId: subscriber?._id,
     });
+    /*
+     * return this.executionDetailsRepository.find({
+     *   _notificationId: command.notificationId,
+     *   _environmentId: command.environmentId,
+     *   // _subscriberId: subscriber?._id,
+     * });
+     */
   }
 
   @CachedEntity({

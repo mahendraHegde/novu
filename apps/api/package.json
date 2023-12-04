@@ -41,6 +41,7 @@
     "@nestjs/terminus": "^10.0.1",
     "@novu/application-generic": "^0.22.0",
     "@novu/dal": "^0.22.0",
+    "@novu/aal": "^0.22.0",
     "@novu/node": "^0.22.0",
     "@novu/shared": "^0.22.0",
     "@novu/stateless": "^0.22.0",

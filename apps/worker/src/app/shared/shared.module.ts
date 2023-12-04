@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { ExecutionDetailsRepository as ExecDetailRepo, AALService } from '@novu/aal';
+
 import {
   ChangeRepository,
   DalService,
@@ -98,6 +100,8 @@ const dalService = {
   },
 };
 
+const AAL_MODELS = [AALService, ExecDetailRepo];
+
 const PROVIDERS = [
   analyticsService,
   BulkCreateExecutionDetails,
@@ -127,6 +131,7 @@ const PROVIDERS = [
   CreateTenant,
   ProcessTenant,
   ...DAL_MODELS,
+  ...AAL_MODELS,
   ActiveJobsMetricService,
 ];
 

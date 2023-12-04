@@ -1,9 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  ExecutionDetailsRepository,
-  ExecutionDetailsEntity,
-  DalException,
-} from '@novu/dal';
+import { ExecutionDetailsRepository, DalException } from '@novu/dal';
+
+import { ExecutionDetailsEntity } from '@novu/aal';
 
 import { BulkCreateExecutionDetailsCommand } from './bulk-create-execution-details.command';
 
@@ -50,8 +48,8 @@ export class BulkCreateExecutionDetails {
   }
 
   private cleanFromNulls(
-    entity: Omit<ExecutionDetailsEntity, 'createdAt' | '_id'>
-  ): Omit<ExecutionDetailsEntity, 'createdAt' | '_id'> {
+    entity: ExecutionDetailsEntity
+  ): ExecutionDetailsEntity {
     const cleanEntity = Object.assign({}, entity);
 
     if (cleanEntity.raw === null) {

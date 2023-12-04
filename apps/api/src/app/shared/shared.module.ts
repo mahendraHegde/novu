@@ -42,6 +42,7 @@ import {
 
 import * as packageJson from '../../../package.json';
 import { JobTopicNameEnum } from '@novu/shared';
+import { AALService, ExecutionDetailsRepository as ExecDetailRepo } from '@novu/aal';
 
 const DAL_MODELS = [
   UserRepository,
@@ -78,9 +79,12 @@ const dalService = {
   },
 };
 
+const AAL_MODELS = [AALService, ExecDetailRepo];
+
 const PROVIDERS = [
   analyticsService,
   cacheService,
+  ...AAL_MODELS,
   CacheServiceHealthIndicator,
   CalculateDelayService,
   dalService,
